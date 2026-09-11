@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#05070b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+<title>V SPACE — Mission Control</title>
+</head>
+<body>
+<div id="stars"></div>
+<div class="scanlines"></div>
+
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">V</span><div><b>V SPACE</b><small>MISSION CONTROL</small></div></div>
+  <div class="mission-clock"><span>MISSION</span><b id="missionTime">00:00:00</b></div>
+  <button id="fullscreenBtn" class="icon-btn" aria-label="Plein écran">⛶</button>
+</header>
+
+<main id="app">
+<section id="fleetScreen" class="screen active">
+  <div class="hero-copy">
+    <div class="eyebrow">NEXT-GENERATION LAUNCH SYSTEM</div>
+    <h1>SELECT YOUR<br><span>LAUNCH VEHICLE</span></h1>
+    <p>Choose a vehicle, configure the mission and take control.</p>
+  </div>
+
+  <div class="rocket-stage">
+    <button class="nav-arrow left" id="prevRocket">‹</button>
+    <div id="rocketVisual" class="rocket-visual"></div>
+    <button class="nav-arrow right" id="nextRocket">›</button>
+    <div class="rocket-glow"></div>
+  </div>
+
+  <div class="rocket-selector" id="rocketSelector"></div>
+
+  <div class="vehicle-info">
+    <div><small>VEHICLE</small><strong id="vehicleName">V-01</strong></div>
+    <div><small>CLASS</small><strong id="vehicleClass">ORBITAL</strong></div>
+    <div><small>HEIGHT</small><strong id="vehicleHeight">42 M</strong></div>
+    <div><small>THRUST</small><strong id="vehicleThrust">1.2 MN</strong></div>
+  </div>
+
+  <div class="mission-select">
+    <button class="mission-card selected" data-mission="orbit"><span>01</span><b>EARTH ORBIT</b><small>Low Earth Orbit</small></button>
+    <button class="mission-card" data-mission="moon"><span>02</span><b>LUNAR TRANSFER</b><small>Moon trajectory</small></button>
+    <button class="mission-card" data-mission="mars"><span>03</span><b>MARS TRANSFER</b><small>Deep space</small></button>
+  </div>
+
+  <button id="startMission" class="launch-button"><span>START MISSION</span><i>↗</i></button>
+</section>
+
+<section id="controlScreen" class="screen">
+  <div class="control-header">
+    <div><span class="live-dot"></span> LIVE TELEMETRY <b id="phaseLabel">PRE-LAUNCH</b></div>
+    <button id="abortBtn" class="abort-btn">ABORT</button>
+  </div>
+
+  <div class="dashboard">
+    <div class="panel telemetry">
+      <div class="panel-title">FLIGHT DATA <span>LIVE</span></div>
+      <div class="metric-grid">
+        <div class="metric"><small>ALTITUDE</small><strong id="altitude">0.0</strong><em>KM</em></div>
+        <div class="metric"><small>VELOCITY</small><strong id="velocity">0</strong><em>KM/H</em></div>
+        <div class="metric"><small>MACH</small><strong id="mach">0.00</strong><em></em></div>
+        <div class="metric"><small>THRUST</small><strong id="thrust">0</strong><em>%</em></div>
+        <div class="metric"><small>FUEL</small><strong id="fuel">100</strong><em>%</em></div>
+        <div class="metric"><small>G-FORCE</small><strong id="gforce">1.0</strong><em>G</em></div>
+      </div>
+    </div>
+
+    <div class="panel trajectory">
+      <div class="panel-title">TRAJECTORY <span id="trajectoryLabel">EARTH ORBIT</span></div>
+      <canvas id="trajectoryCanvas"></canvas>
+      <div class="orbit-status"><span></span><b id="orbitStatus">GROUND HOLD</b></div>
+    </div>
+
+    <div class="panel systems">
+      <div class="panel-title">SYSTEMS <span>NOMINAL</span></div>
+      <div id="systemList"></div>
+    </div>
+
+    <div class="panel engines">
+      <div class="panel-title">ENGINE ARRAY</div>
+      <div class="engine-row"><span>ENGINE 1</span><i id="e1"></i><b id="e1val">OFF</b></div>
+      <div class="engine-row"><span>ENGINE 2</span><i id="e2"></i><b id="e2val">OFF</b></div>
+      <div class="engine-row"><span>ENGINE 3</span><i id="e3"></i><b id="e3val">OFF</b></div>
+      <div class="engine-row"><span>ENGINE 4</span><i id="e4"></i><b id="e4val">OFF</b></div>
+    </div>
+
+    <div class="panel mission-panel">
+      <div class="panel-title">MISSION</div>
+      <div class="mission-big"><small id="missionName">EARTH ORBIT</small><b id="missionPhase">T−10</b></div>
+      <div class="progress"><i id="progressBar"></i></div>
+      <div class="mission-stats"><span>RANGE <b id="range">0 KM</b></span><span>STATUS <b id="statusText">STANDBY</b></span></div>
+    </div>
+  </div>
+</section>
+
+<section id="resultScreen" class="screen">
+  <div class="result-card">
+    <div class="success-ring">✓</div>
+    <div class="eyebrow">MISSION COMPLETE</div>
+    <h2 id="resultTitle">ORBIT ACHIEVED</h2>
+    <p id="resultText">Vehicle successfully reached mission parameters.</p>
+    <div class="result-stats">
+      <div><small>MISSION TIME</small><b id="resultTime">00:00</b></div>
+      <div><small>MAX ALTITUDE</small><b id="resultAltitude">0 KM</b></div>
+      <div><small>MAX VELOCITY</small><b id="resultVelocity">0 KM/H</b></div>
+    </div>
+    <button id="returnBtn" class="launch-button"><span>RETURN TO FLEET</span><i>↗</i></button>
+  </div>
+</section>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
